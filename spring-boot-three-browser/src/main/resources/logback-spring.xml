@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty scope="context" name="logPath" source="logging.custom.path" />
+
+
+    <conversionRule  conversionWord = "clr"  converterClass = "org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule  conversionWord = "wex"  converterClass ="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule  conversionWord = "wEx"  converterClass ="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <property  name = "CONSOLE_LOG_PATTERN"  value = "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS} ){blue} %clr(- %5p ){blue} %clr( pid：${PID:- }){magenta} %clr(-----){faint} %clr([%15.15t]){blue} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n - %wEx}"/>
+    <property  name = "FILE_LOG_PATTERN"  value = "%d{yyyy-MM-dd HH:mm:ss.SSS} - %5p pid：${PID:- } --- [%t] %-40.40logger{39} : %m%n - %wEx }" />
+
+
+    <appender  name = "CONSOLE"  class = "ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+
+    <appender  name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+        </encoder >
+        <rollingPolicy  class = "ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy" >
+            <fileNamePattern>${logPath}/spring_boot_web_.%d{yyyy-MM-dd}.%i.log </fileNamePattern>
+            <maxFileSize>10MB </maxFileSize>
+            <maxHistory>2</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <!-- 开发环境日志级别为DEBUG/并且开发环境不写日志文件 -->
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+    </springProfile>
+
+    <!--配置记录器-->
+    <!--记录连接打开和关闭事件以及转储所有打开的连接号。这对于追踪连接泄漏问题非常有用-->
+    <logger name="jdbc.connection" level="INFO" addtivity="true" />
+    <!--记录除ResultSet之外的所有JDBC调用。这是一个非常庞大的输出，除非追踪特定的JDBC问题，否则通常不需要-->
+    <logger name="jdbc.audit" level="OFF" addtivity="true" />
+    <!--更加庞大，因为记录了对ResultSet对象的所有调用-->
+    <logger name="jdbc.resultset" level="OFF" addtivity="true" />
+    <!--仅记录SQL。在预准备语句中执行的SQL会自动显示，其绑定参数将替换为该位置绑定的数据，从而大大提高了可读性-->
+    <logger name="jdbc.sqlonly" level="INFO" addtivity="true" />
+    <!--记录SQL，包括SQL执行时间的时间统计信息-->
+    <logger name="jdbc.sqltiming" level="INFO" addtivity="true" />
+
+    <!-- 测试环境日志级别为INFO/并且记录日志文件 -->
+    <springProfile name="test,prod">
+        <root level="INFO">
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+
+</configuration>
