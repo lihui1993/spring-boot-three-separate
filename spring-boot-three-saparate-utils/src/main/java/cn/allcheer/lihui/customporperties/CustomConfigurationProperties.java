@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
  * @author lihui
  */
 @ConfigurationProperties(prefix = "my.configuration")
-@PropertySource(value = "customApplication.properties")
+@PropertySource(value = "classpath:/customApplication.properties")
 @Component
 @Setter
 @Getter

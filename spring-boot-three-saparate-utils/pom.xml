@@ -19,6 +19,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jsoup/jsoup java爬取网页的工具 -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.2</version>
+        </dependency>
+
         <dependency>
             <groupId>cn.allcheer.lihui</groupId>
             <artifactId>spring-boot-three-saparate-dal</artifactId>
